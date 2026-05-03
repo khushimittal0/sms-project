@@ -1,6 +1,6 @@
 import React, { useState, useEffect, type CSSProperties } from "react";
 
-// ---------- Types ----------
+
 type Shift = {
   id: number;
   start: string; // "HH:mm"
@@ -13,10 +13,10 @@ type Crew = {
   shifts: Shift[];
 };
 
-// ---------- Constants ----------
+
 const STORAGE_KEY = "crews";
 
-// Teal-based palette
+
 const COLOR = {
   primary: "#0d9488",
   primaryDark: "#0f766e",
@@ -33,7 +33,7 @@ const COLOR = {
   warnSoft: "#fef3c7",
 };
 
-// ---------- Helpers ----------
+
 function toMinutes(time: string) {
   const [h, m] = time.split(":").map(Number);
   return h * 60 + m;
@@ -56,8 +56,6 @@ function shiftDuration(start: string, end: string) {
   return `${h}h ${m}m`;
 }
 
-// Convert a shift into one or two minute-intervals on a 0–1440 scale.
-// Overnight shifts get split into two pieces so overlap checks work.
 function getIntervals(start: string, end: string): Array<[number, number]> {
   const s = toMinutes(start);
   let e = toMinutes(end);
@@ -73,8 +71,6 @@ function intervalsOverlap(a: [number, number], b: [number, number]) {
   return a[0] < b[1] && b[0] < a[1];
 }
 
-// Check if a new shift overlaps with any existing shift in the list.
-// Pass `ignoreId` when editing, so the shift being edited is skipped.
 function findOverlap(
   newStart: string,
   newEnd: string,
@@ -97,7 +93,7 @@ function findOverlap(
 
 const HOUR_LABELS = [0, 3, 6, 9, 12, 15, 18, 21, 24];
 
-// ---------- Component ----------
+
 export function CrewPage() {
   const [crews, setCrews] = useState<Crew[]>(() => {
     try {
@@ -134,7 +130,7 @@ export function CrewPage() {
   const activeCrew = crews.find((c) => c.id === activeCrewId) ?? null;
 
 
-  // ---------- Actions ----------
+
   function addCrew() {
     const name = newCrewName.trim();
     if (!name) {return};
@@ -259,7 +255,6 @@ export function CrewPage() {
     cancelEdit();
   }
 
-  // ---------- Render ----------
   return (
     <div style={S.page}>
       <header style={S.header}>
@@ -412,7 +407,7 @@ export function CrewPage() {
                   ...(isSelected ? S.crewCardSelected : null),
                 }}
               >
-                  {/* ✅ STEP 3: CHECKBOX HERE */}
+               
       {deleteMode && (
         <input
           type="checkbox"
@@ -609,7 +604,6 @@ export function CrewPage() {
 
 
 
-// ---------- Styles ----------
 const S = {
   page: {
     maxWidth: 1100,
