@@ -681,7 +681,7 @@ const S = {
     marginBottom: 6,
     fontSize: 13,
     fontWeight: 500,
-    color: COLOR.textMuted,
+    color: '',
   } as CSSProperties,
   row: {
     display: "flex",
