@@ -30,9 +30,9 @@ import React, { useState, useEffect, type CSSProperties } from "react";
      warnSoft: "#fef3c7",
   };
 
-   function toMinutes(time: string) {
+    function toMinutes(time: string) {
       const [h, m] = time.split(":").map(Number);
-      return h * 60 + m;
+     return h * 60 + m;
     }
 
     function format12Hour(time: string) {
@@ -52,8 +52,8 @@ import React, { useState, useEffect, type CSSProperties } from "react";
            return `${h}h ${m}m`;
     }
 
-     function getIntervals(start: string, end: string): Array<[number, number]> {
-         const s = toMinutes(start);
+    function getIntervals(start: string, end: string): Array<[number, number]> {
+       const s = toMinutes(start);
          let e = toMinutes(end);
          if (e === s) {return []};
          if (e > s) {return [[s, e]]};
