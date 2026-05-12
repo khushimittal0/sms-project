@@ -2,8 +2,8 @@ import React, { useState, useEffect, type CSSProperties } from "react";
 
   type Shift = {
     id: number;
-    start: string; // "HH:mm"
-    end: string;   // "HH:mm"
+    start: string; 
+    end: string;   
   };
 
   type Crew = {
@@ -168,7 +168,6 @@ import React, { useState, useEffect, type CSSProperties } from "react";
     return false;
   }
 
-  // ✅ SUCCESS CASE
   const newShift: Shift = {
     id: Date.now(),
     start: input.start,
@@ -402,7 +401,7 @@ import React, { useState, useEffect, type CSSProperties } from "react";
           }}
         />
       )}
-                <div style={S.crewHeader}>
+       <div style={S.crewHeader}>
                   <button
                     type="button"
                     onClick={() => setSelectedCrewId(crew.id)}
@@ -421,64 +420,64 @@ import React, { useState, useEffect, type CSSProperties } from "react";
                     </span>
                   </button>
 
-                             <div style={{ marginTop: 10 }}>
-  {!openAddShift[crew.id] ? (
-    <button
-      onClick={() =>
-        setOpenAddShift({ ...openAddShift, [crew.id]: true })
-      }
-      style={S.secondaryBtn}
-    >
-      + Add Shift
-    </button>
-  ) : (
-    <>
-      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-        <input
-          type="time"
-          value={shiftInputs[crew.id]?.start || ""}
-          onChange={(e) =>
-            setShiftInputs({
-              ...shiftInputs,
-              [crew.id]: {
-                ...shiftInputs[crew.id],
-                start: e.target.value,
-              },
-            })
-          }
-          style={S.timeInput}
-        />
+            <div style={{ marginTop: 10 }}>
+                 {!openAddShift[crew.id] ? (
+                 <button
+                   onClick={() =>
+                      setOpenAddShift({ ...openAddShift, [crew.id]: true })
+                    }
+                   style={S.secondaryBtn}
+                  >
+                    + Add Shift
+                </button>
+                ) : (
+                <>
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <input
+                  type="time"
+                  value={shiftInputs[crew.id]?.start || ""}
+                  onChange={(e) =>
+                  setShiftInputs({
+                  ...shiftInputs,
+                 [crew.id]: {
+                 ...shiftInputs[crew.id],
+                 start: e.target.value,
+               },
+              })
+            }
+                style={S.timeInput}
+            />
 
-        <span>→</span>
+            <span>→</span>
 
-        <input
-          type="time"
-          value={shiftInputs[crew.id]?.end || ""}
-          onChange={(e) =>
-            setShiftInputs({
-              ...shiftInputs,
-              [crew.id]: {
+             <input
+                type="time"
+                value={shiftInputs[crew.id]?.end || ""}
+                onChange={(e) =>
+                setShiftInputs({
+                ...shiftInputs,
+                [crew.id]: {
                 ...shiftInputs[crew.id],
                 end: e.target.value,
-              },
-            })
-          }
-          style={S.timeInput}
-        />
+               },
+             })
+           }
+             style={S.timeInput}
+          />
 
-        <button
-          onClick={() => {
-            const success = addShift(crew.id);
-            if (success) {
-              setOpenAddShift({ ...openAddShift, [crew.id]: false });
-            }
-          }}
-          style={S.primaryBtn}
-        >
-          Add
-        </button>
+            <button
+               onClick={() => {
+                 const success = addShift(crew.id);
+                 if (success) {
+                   setOpenAddShift({ ...openAddShift, [crew.id]: false });
+                 }
+             }}
+                style={S.primaryBtn}
+           >
+               Add
+          </button>
 
-        <button
+          <button
           onClick={() =>
             setOpenAddShift({ ...openAddShift, [crew.id]: false })
           }
@@ -486,23 +485,23 @@ import React, { useState, useEffect, type CSSProperties } from "react";
         >
           Cancel
         </button>
+       </div>
+
+      
+        {shiftErrors[crew.id] && (
+           <div style={S.errorText}>
+              {shiftErrors[crew.id]}
+           </div>
+        )}
+       </>
+         )}
+        </div>
+
       </div>
 
-      {/* ✅ ERROR */}
-      {shiftErrors[crew.id] && (
-        <div style={S.errorText}>
-          {shiftErrors[crew.id]}
-        </div>
-      )}
-    </>
-  )}
-</div>
-
-                </div>
-
-                <div style={S.timeline}>
-                  {Array.from({ length: 25 }).map((_, i) => (
-                    <div
+         <div style={S.timeline}>
+               {Array.from({ length: 25 }).map((_, i) => (
+                   <div
                       key={i}
                       style={{
                         ...S.hourLine,
@@ -511,7 +510,7 @@ import React, { useState, useEffect, type CSSProperties } from "react";
                           i % 6 === 0 ? COLOR.borderStrong : COLOR.border,
                       }}
                     />
-                  ))}
+                   ))}
 
                   {crew.shifts.map((s) => {
                     const startMin = toMinutes(s.start);
