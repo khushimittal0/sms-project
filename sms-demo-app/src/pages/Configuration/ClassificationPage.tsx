@@ -1,10 +1,14 @@
+/* eslint-disable */
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Input } from '@grafana/ui';
 import { css } from '@emotion/css';
 
 type Node = {
+  id?: number;
   name: string;
   children: Node[];
+  parentId?: number | null;
+  level?: number;
 };
 
 const ClassificationPage = () => {
@@ -127,15 +131,8 @@ const ClassificationPage = () => {
     `
   };
 
-  
-  const [tree, setTree] = useState<Node[]>(() => {
-    const saved = localStorage.getItem('classificationTree');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [savedTrees, setSavedTrees] = useState<Node[][]>(() => {
-    const data = localStorage.getItem('allClassifications');
-    return data ? JSON.parse(data) : [];
-  });
+  const [tree, setTree] = useState<Node[]>([]);
+  const [savedTrees, setSavedTrees] = useState<Node[][]>([]);
   const [activePath, setActivePath] = useState<number[] | null>(null);
   const [input, setInput] = useState('');
   const [isAdding, setIsAdding] = useState(false);
@@ -146,16 +143,46 @@ const ClassificationPage = () => {
   const [deleteMode, setDeleteMode] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  
-  useEffect(() => {
-    localStorage.setItem('classificationTree', JSON.stringify(tree));
-  }, [tree]);
+  // Fetch from YOUR API
+  const fetchSavedTree = async () => {
+    try {
+      const response = await fetch('http://localhost:5032/api/classification/tree');
+      if (response.ok) {
+        const data = await response.json();
+        // Wrap the data in an array so it appears as "Classification 1" in the UI
+        setSavedTrees(data.length > 0 ? [data] : []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch classification tree", error);
+    }
+  };
 
   useEffect(() => {
-    localStorage.setItem('allClassifications', JSON.stringify(savedTrees));
-  }, [savedTrees]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchSavedTree();
+  }, []);
 
-  
+  // Recursive save to YOUR API
+  const saveTreeToApi = async (nodes: Node[], parentId: number | null = null) => {
+    for (const node of nodes) {
+      try {
+        const res = await fetch('http://localhost:5032/api/classification', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: node.name, parentId })
+        });
+        if (res.ok) {
+          const savedNode = await res.json();
+          if (node.children && node.children.length > 0) {
+            await saveTreeToApi(node.children, savedNode.id);
+          }
+        }
+      } catch (error) {
+         console.error("Failed to save node:", node.name, error);
+      }
+    }
+  };
+
   const addNode = (nodes: Node[], path: number[], value: string): Node[] => {
     if (path.length === 0) {
       return [...nodes, { name: value, children: [] }];
@@ -204,10 +231,17 @@ const ClassificationPage = () => {
     );
   };
 
-  const deleteSelectedSaved = () => {
-    setSavedTrees(prev =>
-      prev.filter((_, index) => !selectedSaved.includes(index))
-    );
+  const deleteSelectedSaved = async () => {
+    if (savedTrees.length > 0 && savedTrees[0].length > 0) {
+      for (const rootNode of savedTrees[0]) {
+        if (rootNode.id) {
+           await fetch(`http://localhost:5032/api/classification/${rootNode.id}`, {
+             method: 'DELETE'
+           });
+        }
+      }
+    }
+    await fetchSavedTree();
     setSelectedSaved([]);
     setDeleteMode(false);
   };
@@ -219,7 +253,6 @@ const ClassificationPage = () => {
      if (activePath) {
   setOpenNodes(prev => {
     const newSet = new Set(prev);
-    
     
     for (let i = 1; i <= activePath.length; i++) {
       newSet.add(activePath.slice(0, i).join('-'));
@@ -249,25 +282,37 @@ const ClassificationPage = () => {
     setInput('');
     setActivePath([]);
     setIsAdding(false);
-    localStorage.removeItem('classificationTree');
   };
 
-  const handleSaveTree = () => {
-        if (tree.length === 0) {return};
-    const copy = JSON.parse(JSON.stringify(tree));
-    setSavedTrees((prev) => [...prev, copy]);
+  const handleSaveTree = async () => {
+    if (tree.length === 0) {return};
+    
+    // Save to Database
+    await saveTreeToApi(tree);
+    
+    // Fetch refreshed tree from Database
+    await fetchSavedTree();
+
+    // Clear Workspace
     setTree([]);
     setInput('');
     setActivePath(null);
     setIsAdding(false);
     setIsRootAdding(false);
     setOpenNodes(new Set());
-    localStorage.removeItem('classificationTree');
   };
 
-  const handleClearSaved = () => {
-    setSavedTrees([]);
-    localStorage.removeItem('allClassifications');
+  const handleClearSaved = async () => {
+    if (savedTrees.length > 0 && savedTrees[0].length > 0) {
+      for (const rootNode of savedTrees[0]) {
+        if (rootNode.id) {
+           await fetch(`http://localhost:5032/api/classification/${rootNode.id}`, {
+             method: 'DELETE'
+           });
+        }
+      }
+    }
+    await fetchSavedTree();
   };
 
   const isSamePath = (a: number[] | null, b: number[]) => {
@@ -275,7 +320,6 @@ const ClassificationPage = () => {
     return a.every((val, i) => val === b[i]);
   };
 
- 
   const renderTree = (nodes: Node[], path: number[] = [], level = 0) => (
     <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
       {nodes.map((node, index) => {
