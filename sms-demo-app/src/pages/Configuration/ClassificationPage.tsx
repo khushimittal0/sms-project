@@ -269,106 +269,101 @@ const ClassificationPage = () => {
       text-align: center;
     `,
     header: css`
-  margin-bottom: 24px;
-`,
+      margin-bottom: 24px;
+  `,
+    
+    card: css`
+      background: ${C.white};
+      border: 1px solid ${C.slate200};
+      border-radius: 22px;
+      padding: 24px;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+  `,
 
-card: css`
-  background: ${C.white};
-  border: 1px solid ${C.slate200};
-  border-radius: 22px;
-  padding: 24px;
-  overflow-y: auto;
-  box-shadow: 0 10px 30px rgba(15,23,42,0.06);
-`,
+    treeNode: css`
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-radius: 18px;
+      transition: all 0.25s ease;
+      border: 1.5px solid transparent;
+      background: white;
+      &:hover {
+        border-color: rgba(99,102,241,0.25);
+      }
 
-treeNode: css`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px;
-  border-radius: 18px;
-  transition: all 0.25s ease;
-  border: 1.5px solid transparent;
-  background: white;
+      &.active {
+        background: linear-gradient(
+          135deg,
+          rgba(99,102,241,0.12),
+          rgba(139,92,246,0.12)
+       );
+          border-color: rgba(99,102,241,0.45);
+        }
+  `,
 
-  &:hover {
-    border-color: rgba(99,102,241,0.25);
-  }
+    buttonPrimary: css`
+      background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+      border: none !important;
+      color: white !important;
+      box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(99,102,241,0.45);
+       }
+  `,
 
-  &.active {
-    background: linear-gradient(
-      135deg,
-      rgba(99,102,241,0.12),
-      rgba(139,92,246,0.12)
-    );
-    border-color: rgba(99,102,241,0.45);
-  }
-`,
+    titleGradient: css`
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+       font-weight: 900;
+  `,
 
-buttonPrimary: css`
-  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
-  border: none !important;
-  color: white !important;
-  box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+    badge: css`
+       background: linear-gradient(135deg, #6366f1, #8b5cf6);
+       color: white;
+       padding: 5px 12px;
+       border-radius: 999px;
+       font-size: 12px;
+       font-weight: 700;
+       display: inline-flex;
+       align-items: center;
+  `,
 
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 20px rgba(99,102,241,0.45);
-  }
-`,
+    savedCard: css`
+       background: white;
+       border: 1.5px solid ${C.slate200};
+       border-radius: 20px;
+       padding: 18px;
+       margin-bottom: 18px;
+       transition: all 0.25s ease;
+       &:hover {
+          border-color: rgba(99,102,241,0.35);
+          box-shadow: 0 8px 24px rgba(99,102,241,0.08);
+       }
+       &.selected {
+          border-color: #6366f1;
+          box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+       }
+  `,
 
-titleGradient: css`
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 900;
-`,
-
-badge: css`
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: white;
-  padding: 5px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-`,
-
-savedCard: css`
-  background: white;
-  border: 1.5px solid ${C.slate200};
-  border-radius: 20px;
-  padding: 18px;
-  margin-bottom: 18px;
-  transition: all 0.25s ease;
-
-  &:hover {
-    border-color: rgba(99,102,241,0.35);
-    box-shadow: 0 8px 24px rgba(99,102,241,0.08);
-  }
-
-  &.selected {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
-  }
-`,
-
-inputActive: css`
-  input {
-    border-radius: 14px !important;
-    border: 2px solid rgba(99,102,241,0.3) !important;
-    padding: 10px 14px !important;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-
-    &:focus {
-      border-color: #6366f1 !important;
-      box-shadow: 0 0 0 4px rgba(99,102,241,0.18) !important;
-    }
-  }
-`,
-  };
+    inputActive: css`
+       input {
+          border-radius: 14px !important;
+          border: 2px solid rgba(99,102,241,0.3) !important;
+          padding: 10px 14px !important;
+          font-size: 14px !important;
+          font-weight: 500 !important;
+          &:focus {
+             border-color: #6366f1 !important;
+             box-shadow: 0 0 0 4px rgba(99,102,241,0.18) !important;
+          }
+       }
+  `,
+ };
 
 
   const [tree, setTree] = useState<Node[]>([]);
@@ -617,10 +612,17 @@ inputActive: css`
                 }
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', cursor: 'pointer' }} onClick={() => toggleNode(currentPath)}>
-                <span style={{ fontSize: '18px', color: isOpen ? '#6366f1' : '#94a3b8', fontWeight: 'bold', transition: 'all 0.3s cubic-bezier(0.4,0,0.2,1)' }}>
-                  {isOpen ? '▼' : '▶'}
-                </span>
+              <div style={{ display: 'flex', 
+                            alignItems: 'center', 
+                            gap: '14px', 
+                            cursor: 'pointer' }}
+                   onClick={() => toggleNode(currentPath)}>
+                  <span style={{ fontSize: '18px', 
+                               color: isOpen ? '#6366f1' : '#94a3b8', 
+                               fontWeight: 'bold', 
+                               transition: 'all 0.3s cubic-bezier(0.4,0,0.2,1)' }}>
+                     {isOpen ? '▼' : '▶'}
+                  </span>
                 <span style={{ fontSize: '15px', fontWeight: '600', color: '#1e293b', flex: 1 }}>
                   {node.name}
                 </span>
@@ -659,7 +661,9 @@ inputActive: css`
                   width={38}
                   className={styles.inputActive}
                 />
-                <Button size="sm" className={styles.buttonPrimary} onClick={handleSave} style={{ minWidth: '85px', height: '44px' }}>
+                <Button size="sm" className={styles.buttonPrimary} 
+                        onClick={handleSave} 
+                        style={{ minWidth: '85px', height: '44px' }}>
                   Add Node
                 </Button>
               </div>
@@ -683,7 +687,9 @@ inputActive: css`
               width={38}
               className={styles.inputActive}
             />
-            <Button size="sm" className={styles.buttonPrimary} onClick={handleSave} style={{ minWidth: '85px', height: '44px' }}>
+            <Button size="sm" className={styles.buttonPrimary}
+                    onClick={handleSave} 
+                    style={{ minWidth: '85px', height: '44px' }}>
               Add Root
             </Button>
           </div>
@@ -713,7 +719,12 @@ inputActive: css`
               {/* Expand toggle — only when NOT editing */}
               {!isEditing && (
                 <span
-                  style={{ fontSize: '15px', width: '24px', color: '#6366f1', marginRight: '10px', fontWeight: 'bold', cursor: 'pointer' }}
+                  style={{ fontSize: '15px', 
+                           width: '24px', 
+                           color: '#6366f1', 
+                           marginRight: '10px', 
+                           fontWeight: 'bold', 
+                           cursor: 'pointer' }}
                   onClick={() => toggleSavedNode(classificationIndex, currentPath)}
                 >
                   {n.children.length > 0 ? (isOpen ? '▼' : '▶') : '•'}
@@ -758,7 +769,14 @@ inputActive: css`
                 </div>
               ) : (
                 <span
-                  style={{ maxWidth: '220px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#374151', fontWeight: isOpen ? '600' : '500', flex: 1, cursor: 'pointer' }}
+                  style={{ maxWidth: '220px', 
+                           overflow: 'hidden', 
+                           textOverflow: 'ellipsis', 
+                           whiteSpace: 'nowrap', 
+                           color: '#374151', 
+                           fontWeight: isOpen ? '600' : '500', 
+                           flex: 1, 
+                           cursor: 'pointer' }}
                   onClick={() => toggleSavedNode(classificationIndex, currentPath)}
                 >
                   {n.name}
@@ -823,7 +841,8 @@ inputActive: css`
             <h1 className={styles.titleGradient} style={{ fontSize: '2.5rem', margin: 0, lineHeight: '1.1' }}>
               Classification
             </h1>
-            <div className={styles.badge} style={{ marginTop: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            <div className={styles.badge} 
+                 style={{ marginTop: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               {savedTrees.length} Saved
             </div>
           </div>
@@ -941,7 +960,8 @@ inputActive: css`
                       style={{ width: '20px', height: '20px', accentColor: '#6366f1' }}
                     />
                   )}
-                  <div className={styles.badge} style={{ fontSize: '13px', padding: '6px 12px', background: '#10b981' }}>
+                  <div className={styles.badge} 
+                       style={{ fontSize: '13px', padding: '6px 12px', background: '#10b981' }}>
                     #{index + 1}
                   </div>
                   <div style={{ fontWeight: 800, fontSize: '17px', color: '#1e293b', flex: 1 }}>
