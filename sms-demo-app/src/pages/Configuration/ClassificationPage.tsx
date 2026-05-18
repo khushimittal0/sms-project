@@ -635,7 +635,12 @@ const confirmRename = async (node: Node) => {
                 style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', flex: 1 }}
                 onClick={() => toggleNode(currentPath)}
               >
-                <span style={{ fontSize: '11px', color: isOpen ? C.indigo : C.slate400, fontWeight: 'bold', width: '12px', transition: 'color 0.2s' }}>
+                <span style={{ 
+                              fontSize: '11px', 
+                              color: isOpen ? C.indigo : C.slate400, 
+                              fontWeight: 'bold', 
+                              width: '12px', 
+                              transition: 'color 0.2s' }}>
                   {isOpen ? '▼' : '▶'}
                 </span>
                 <span style={{ fontSize: '14px', fontWeight: '600', color: C.slate800 }}>
@@ -671,7 +676,8 @@ const confirmRename = async (node: Node) => {
                   width={36}
                   className={styles.inputActive}
                 />
-                <Button size="sm" className={styles.buttonPrimary} onClick={handleSave} style={{ height: '40px', minWidth: '80px' }}>
+                <Button size="sm" className={styles.buttonPrimary} onClick={handleSave} 
+                        style={{ height: '40px', minWidth: '80px' }}>
                   Add
                 </Button>
               </div>
@@ -692,7 +698,8 @@ const confirmRename = async (node: Node) => {
               width={36}
               className={styles.inputActive}
             />
-            <Button size="sm" className={styles.buttonPrimary} onClick={handleSave} style={{ height: '40px', minWidth: '80px' }}>
+            <Button size="sm" className={styles.buttonPrimary} onClick={handleSave} 
+                    style={{ height: '40px', minWidth: '80px' }}>
               Add Root
             </Button>
           </div>
@@ -722,7 +729,14 @@ const confirmRename = async (node: Node) => {
               {/* Expand toggle */}
               {!isEditing && (
                 <span
-                  style={{ fontSize: '11px', width: '18px', color: n.children.length > 0 ? C.indigo : C.slate300, marginRight: '8px', cursor: 'pointer', fontWeight: 'bold', flexShrink: 0 }}
+                  style={{ 
+                         fontSize: '11px', 
+                         width: '18px', 
+                         color: n.children.length > 0 ? C.indigo : C.slate300, 
+                         marginRight: '8px', 
+                         cursor: 'pointer', 
+                         fontWeight: 'bold', 
+                         flexShrink: 0 }}
                   onClick={() => toggleSavedNode(classificationIndex, currentPath)}
                 >
                   {n.children.length > 0 ? (isOpen ? '▼' : '▶') : '·'}
@@ -902,7 +916,13 @@ const confirmRename = async (node: Node) => {
                       style={{ width: '16px', height: '16px', accentColor: C.indigo }}
                     />
                   )}
-                  <span style={{ background: C.indigoLight, color: C.indigoDark, fontSize: '11px', fontWeight: 700, padding: '3px 9px', borderRadius: '999px' }}>
+                  <span style={{ 
+                                background: C.indigoLight, 
+                                color: C.indigoDark, 
+                                fontSize: '11px', 
+                                fontWeight: 700, 
+                                padding: '3px 9px', 
+                                borderRadius: '999px' }}>
                     #{index + 1}
                   </span>
                   <span style={{ fontWeight: 700, fontSize: '14px', color: C.slate800, flex: 1 }}>
