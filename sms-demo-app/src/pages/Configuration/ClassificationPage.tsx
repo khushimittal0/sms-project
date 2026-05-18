@@ -451,18 +451,23 @@ const ClassificationPage = () => {
     }
   };
 
-  const renameNodeApi = async (id: number, newName: string) => {
-    try {
-      await fetch(`http://localhost:5032/api/classification/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: newName }),
-      });
-      await fetchSavedTree();
-    } catch (error) {
-      console.error('Failed to rename node:', error);
+ // 2. FIX: renameNodeApi — await properly karo aur fetchSavedTree ka order sahi karo
+const renameNodeApi = async (id: number, newName: string) => {
+  try {
+    const res = await fetch(`http://localhost:5032/api/classification/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: newName }),
+    });
+    if (!res.ok) {
+      console.error('Rename API failed:', res.status, await res.text());
+      return;
     }
-  };
+    await fetchSavedTree(); // sirf success pe fetch karo
+  } catch (error) {
+    console.error('Failed to rename node:', error);
+  }
+};
 
   const deleteNodeApi = async (id: number) => {
     try {
@@ -590,13 +595,21 @@ const ClassificationPage = () => {
     setTimeout(() => editInputRef.current?.focus(), 50);
   };
 
-  const confirmRename = async (node: Node) => {
-    if (editNodeInput.trim() && node.id && editNodeInput.trim() !== node.name) {
-      await renameNodeApi(node.id, editNodeInput.trim());
-    }
+ // 1. FIX: confirmRename — unnecessary name-equality guard hatao
+const confirmRename = async (node: Node) => {
+  if (!editNodeInput.trim()) {
     setEditingNodeKey(null);
     setEditNodeInput('');
-  };
+    return;
+  }
+  if (node.id) {
+    await renameNodeApi(node.id, editNodeInput.trim());
+  } else {
+    console.warn('Node has no id:', node); // debug ke liye
+  }
+  setEditingNodeKey(null);
+  setEditNodeInput('');
+};
 
   const cancelRename = () => {
     setEditingNodeKey(null);
