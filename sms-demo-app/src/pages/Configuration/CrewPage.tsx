@@ -108,14 +108,11 @@ import React, { useState, useEffect, type CSSProperties } from "react";
       const [shiftInputs, setShiftInputs] = useState<Record<number, {start: string, end: string}>>({});
       const [openAddShift, setOpenAddShift] = useState<Record<number, boolean>>({});
       const [shiftErrors, setShiftErrors] = useState<Record<number, string>>({});
-     
- 
       const [editingCrewId, setEditingCrewId] = useState<number | null>(null);
       const [editingShiftId, setEditingShiftId] = useState<number | null>(null);
       const [editStart, setEditStart] = useState("");
       const [editEnd, setEditEnd] = useState("");
       const [editError, setEditError] = useState("");
-
       const [deleteMode, setDeleteMode] = useState(false);
       const [selectedCrewIds, setSelectedCrewIds] = useState<number[]>([]);
 
@@ -645,9 +642,6 @@ import React, { useState, useEffect, type CSSProperties } from "react";
     </div>
   );
 }
-
-
-
 
 
 const S = {
