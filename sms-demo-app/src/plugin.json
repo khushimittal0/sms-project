@@ -32,6 +32,13 @@
       "addToNav": true,
       "defaultNav": false
     },
+     {
+      "type": "page",
+      "name": "Event List",
+      "path": "/a/%PLUGIN_ID%/event-list",
+      "addToNav": true,
+      "defaultNav": false
+    },
     {
       "type": "page",
       "name": "Configuration",

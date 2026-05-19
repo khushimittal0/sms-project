@@ -411,7 +411,7 @@ const ClassificationPage = () => {
       const response = await fetch('http://localhost:5032/api/classification/tree');
       if (response.ok) {
         const data = await response.json();
-        setSavedTrees(data.length > 0 ? [data] : []);
+        setSavedTrees(data.map((root: Node) => [root]));
       }
     } catch (error) {
       console.error('Failed to fetch classification tree', error);
@@ -424,7 +424,7 @@ const ClassificationPage = () => {
       .then(res => (res.ok ? res.json() : []))
       .then(data => {
         if (!cancelled) {
-          setSavedTrees(data.length > 0 ? [data] : []);
+          setSavedTrees(data.map((root: Node) => [root]));
         }
       })
       .catch(err => console.error('Failed to fetch classification tree', err));

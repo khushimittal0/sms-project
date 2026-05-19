@@ -9,6 +9,7 @@ import { demoPage } from 'pages/Home/demoPage';
 import { delayManagerPage } from 'pages/DelayManager/DelayManagerScene';
 import { configurationPage } from 'pages/Configuration/ConfigurationScene';
 import { crewPage } from 'pages/Configuration/CrewScene';
+import { eventListPage } from 'pages/EventList/EventListScene';
 
 
 
@@ -16,7 +17,7 @@ import { crewPage } from 'pages/Configuration/CrewScene';
 function getSceneApp() {
   return new SceneApp({
  
-     pages: [ demoPage, delayManagerPage, configurationPage, crewPage], 
+     pages: [ demoPage, delayManagerPage,eventListPage, configurationPage, crewPage, ], 
     urlSyncOptions: {
       updateUrlOnInit: true,
       createBrowserHistorySteps: true,

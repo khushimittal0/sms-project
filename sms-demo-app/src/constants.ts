@@ -5,6 +5,7 @@ export const PLUGIN_BASE_URL = `/a/${pluginJson.id}`;
 export enum ROUTES {
   Home = 'home',
   DelayManager = 'delay-manager',
+  EventList = 'event-list',
   Configuration = 'configuration'
 }
 
