@@ -311,7 +311,7 @@ const ClassificationPage = () => {
       border: 1.5px solid ${C.indigo};
       font-size: 13px;
       font-weight: 600;
-      color: ${C.slate900};
+      color: ${C.slate100};
       outline: none;
       box-shadow: 0 0 0 3px rgba(99,102,241,0.18);
       transition: box-shadow 0.15s;
