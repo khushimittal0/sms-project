@@ -110,10 +110,20 @@ const EventListPage = () => {
                 padding: "24px", 
                 boxSizing: "border-box", 
                 fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "20px" }}>
+      <div style={{ 
+                  maxWidth: "1200px", 
+                  margin: "0 auto", 
+                  display: "flex", 
+                  flexDirection: "column", 
+                  gap: "20px" }}>
 
         {/* PAGE HEADER */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
+        <div style={{ 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "space-between", 
+                    flexWrap: "wrap", 
+                    gap: "12px" }}>
           
           <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
             {[
