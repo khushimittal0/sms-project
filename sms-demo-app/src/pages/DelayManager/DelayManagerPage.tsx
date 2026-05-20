@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import ReactECharts from "echarts-for-react";
 
 const API_URL = "http://localhost:5032/api";
@@ -28,30 +28,33 @@ interface Classification {
   children: Classification[];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function DelayManagerPage() {
   const barChartRef = useRef(null);
   const eventsChartRef = useRef(null);
   const [events, setEvents] = useState<TimingEvent[]>([]);
   const [categories, setCategories] = useState<Classification[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    Promise.all([
-      fetch(`${API_URL}/events`).then((r) => r.json()),
-      fetch(`${API_URL}/classification/tree`).then((r) => r.json()),
-    ])
-      .then(([eventsData, treeData]) => {
-        setEvents(eventsData);
-        setCategories(treeData);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch data:", err);
-        setLoading(false);
-      });
+  // Ref-based fetcher — stable reference, no setState called directly in effect body
+  const fetchData = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const [eventsData, treeData] = await Promise.all([
+        fetch(`${API_URL}/events`).then((r) => r.json()),
+        fetch(`${API_URL}/classification/tree`).then((r) => r.json()),
+      ]);
+      setEvents(eventsData);
+      setCategories(treeData);
+    } catch (err) {
+      console.error("Failed to fetch data:", err);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
   }, []);
+
+  useEffect(() => { void fetchData(); }, [fetchData]);
 
   const findInTree = (node: Classification, targetId: number): boolean => {
     if (node.id === targetId) {return true;}
@@ -69,7 +72,6 @@ export function DelayManagerPage() {
     return event.classificationName || "Unclassified";
   };
 
-  // ── Chart data ─────────────────────────────────────────────────────────────
   const categoryNames = categories.map((c) => c.name);
   const categoryDurations = categoryNames.map((catName) => {
     const catEvents = events.filter((e) => getTopLevelCategory(e) === catName);
@@ -89,15 +91,6 @@ export function DelayManagerPage() {
   });
   const durations = events.map((e) => Math.round(e.durationMs / 1000));
 
-  // ── Combined table: group events by top-level category ─────────────────────
-  const groupedByCategory: Record<string, TimingEvent[]> = {};
-  for (const event of events) {
-    const cat = getTopLevelCategory(event);
-    if (!groupedByCategory[cat]) {groupedByCategory[cat] = [];}
-    groupedByCategory[cat].push(event);
-  }
-
-  // ── ECharts options ────────────────────────────────────────────────────────
   const barOption = {
     grid: { top: 50, bottom: 20, left: 120, right: 80 },
     legend: {
@@ -128,9 +121,7 @@ export function DelayManagerPage() {
           show: true,
           position: "right",
           formatter: (params: { value: number }) =>
-            params.value === 0
-              ? "0 min"
-              : `${params.value.toLocaleString()} min`,
+            params.value === 0 ? "0 min" : `${params.value.toLocaleString()} min`,
           fontSize: 11,
           color: "#333",
         },
@@ -139,9 +130,7 @@ export function DelayManagerPage() {
     tooltip: {
       trigger: "axis",
       axisPointer: { type: "shadow" },
-      formatter: (
-        params: Array<{ seriesName: string; name: string; value: number }>
-      ) => {
+      formatter: (params: Array<{ seriesName: string; name: string; value: number }>) => {
         const p = params[0];
         return `${p.seriesName}<br/>${p.name}: ${p.value.toLocaleString()} min`;
       },
@@ -169,10 +158,7 @@ export function DelayManagerPage() {
       axisLabel: { fontSize: 10, color: "#666", rotate: 0 },
       axisLine: { lineStyle: { color: "#ccc" } },
       axisTick: { show: true, lineStyle: { color: "#ccc" } },
-      splitLine: {
-        show: true,
-        lineStyle: { color: "#e8ecf2", type: "solid" },
-      },
+      splitLine: { show: true, lineStyle: { color: "#e8ecf2", type: "solid" } },
     },
     yAxis: {
       type: "value",
@@ -227,6 +213,10 @@ export function DelayManagerPage() {
         boxSizing: "border-box",
       }}
     >
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      `}</style>
+
       <div
         style={{
           maxWidth: "1100px",
@@ -276,16 +266,46 @@ export function DelayManagerPage() {
             <div style={{ fontSize: "13px", fontWeight: 600, color: "#333" }}>
               Events Timeline ({events.length} events from API)
             </div>
-            <div
-              style={{
-                fontSize: "11px",
-                color: "#777",
-                background: "#f1f3f7",
-                padding: "4px 8px",
-                borderRadius: "6px",
-              }}
-            >
-              {MACHINE}
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div
+                style={{
+                  fontSize: "11px",
+                  color: "#777",
+                  background: "#f1f3f7",
+                  padding: "4px 8px",
+                  borderRadius: "6px",
+                }}
+              >
+                {MACHINE}
+              </div>
+              {/* ── REFRESH BUTTON ── */}
+              <button
+                onClick={() => fetchData()}
+                disabled={refreshing}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                  padding: "4px 10px",
+                  fontSize: "12px",
+                  color: "#5b3df5",
+                  background: "#f0eeff",
+                  border: "1px solid #d4c8fc",
+                  borderRadius: "6px",
+                  cursor: refreshing ? "not-allowed" : "pointer",
+                  opacity: refreshing ? 0.7 : 1,
+                }}
+              >
+                <span
+                  style={{
+                    display: "inline-block",
+                    animation: refreshing ? "spin 0.8s linear infinite" : "none",
+                  }}
+                >
+                  ↻
+                </span>
+                {refreshing ? "Loading..." : "Refresh"}
+              </button>
             </div>
           </div>
           <div style={{ height: 260 }}>

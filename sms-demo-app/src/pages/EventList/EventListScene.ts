@@ -1,12 +1,11 @@
 import { SceneAppPage, EmbeddedScene, SceneReactObject } from '@grafana/scenes';
-import { prefixRoute } from '../../utils/utils.routing';
 import { ROUTES } from '../../constants';
 import { EventListPage } from './EventListPage';
 
 export const eventListPage = new SceneAppPage({
-  title: 'Event List',
+  title: '',
 
-  url: prefixRoute(ROUTES.EventList),
+  url: '/event-list',
   routePath: ROUTES.EventList,
 
   getScene: () =>

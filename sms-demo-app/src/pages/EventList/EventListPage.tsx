@@ -585,20 +585,20 @@ const EventListPage = () => {
                             style={{
                               fontFamily: "monospace",
                               fontSize: 12,
-                              color: "#9ca3af",
-                            }}
+                              color: "#161617",
+                            }}  
                           >
-                            #{ev.id}
+                             {ev.id}
                           </span>
                         </td>
 
-                        <td style={{ ...tdStyle, fontSize: 12 }}>{ev.triggerSignalId}</td>
+                        <td style={{ ...tdStyle, fontSize: 12 ,color: "#101113"}}>{ev.triggerSignalId}</td>
 
-                        <td style={{ ...tdStyle, whiteSpace: "nowrap", fontSize: 12, color: "#6b7280" }}>
+                        <td style={{ ...tdStyle, whiteSpace: "nowrap", fontSize: 12, color: "#101113" }}>
                           {fmt(ev.startTime)}
                         </td>
 
-                        <td style={{ ...tdStyle, whiteSpace: "nowrap", fontSize: 12, color: "#6b7280" }}>
+                        <td style={{ ...tdStyle, whiteSpace: "nowrap", fontSize: 12, color: "#101113" }}>
                           {fmt(ev.endTime)}
                         </td>
 
