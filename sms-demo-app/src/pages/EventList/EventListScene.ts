@@ -3,8 +3,6 @@ import { prefixRoute } from '../../utils/utils.routing';
 import { ROUTES } from '../../constants';
 import { EventListPage } from './EventListPage';
 
-
-
 export const eventListPage = new SceneAppPage({
   title: 'Event List',
 
