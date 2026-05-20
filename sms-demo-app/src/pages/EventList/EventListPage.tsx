@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 const API_URL = "http://localhost:5032/api";
 
-
 interface TimingEvent {
   id: number;
   triggerSignalId: string;
@@ -25,7 +24,6 @@ interface Classification {
 }
 
 const PURPLE = "#5b3df5";
-
 
 const thStyle: React.CSSProperties = {
   background: "#f4f5fa",
@@ -60,7 +58,6 @@ const EventListPage = () => {
   const [events, setEvents] = useState<TimingEvent[]>([]);
   const [categories, setCategories] = useState<Classification[]>([]);
   
-
   useEffect(() => {
     Promise.all([
       fetch(`${API_URL}/events`).then((r) => r.json()),
@@ -72,8 +69,7 @@ const EventListPage = () => {
         //setLoading(false);
       })
       .catch((err) => {
-        console.error("Failed to fetch:", err);
-        
+        console.error("Failed to fetch:", err); 
       });
   }, []);
 
@@ -93,7 +89,6 @@ const EventListPage = () => {
     return event.classificationName || "Unclassified";
   };
 
-
   const groupedByCategory: Record<string, TimingEvent[]> = {};
   for (const event of events) {
     const cat = getTopLevelCategory(event);
@@ -107,11 +102,14 @@ const EventListPage = () => {
   const totalMin = Math.round(totalDurationMs / 60000); 
   const categoryCount = Object.keys(groupedByCategory).length;
  
-
-  // ── Inline message inside tbody (table structure hamesha render hogi) ────────
- 
   return (
-    <div style={{ width: "100%", minHeight: "100vh", background: "#f0f2f7", padding: "24px", boxSizing: "border-box", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
+    <div style={{ 
+                width: "100%", 
+                minHeight: "100vh", 
+                background: "#f0f2f7", 
+                padding: "24px", 
+                boxSizing: "border-box", 
+                fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "20px" }}>
 
         {/* PAGE HEADER */}
@@ -128,7 +126,12 @@ const EventListPage = () => {
                 borderRadius: "8px", padding: "8px 16px", textAlign: "center", minWidth: "100px",
               }}>
                 <div style={{ fontSize: "18px", fontWeight: 700, color: PURPLE }}>{stat.value}</div>
-                <div style={{ fontSize: "10px", color: "#9ca3af", marginTop: "2px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                <div style={{ 
+                            fontSize: "10px", 
+                            color: "#9ca3af", 
+                            marginTop: "2px", 
+                            textTransform: "uppercase", 
+                            letterSpacing: "0.05em" }}>
                   {stat.label}
                 </div>
               </div>
@@ -304,11 +307,8 @@ const EventListPage = () => {
             </table>
           </div>
         </div>
-       
         </div>
-
       </div>
-    
   );
 };
 
