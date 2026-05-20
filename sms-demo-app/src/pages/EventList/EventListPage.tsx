@@ -227,8 +227,12 @@ const HierarchyPanel: React.FC<{
                     // root: database/folder icon
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                       <ellipse cx="7" cy="3.5" rx="5" ry="2" stroke={isLeaf ? "#fff" : "#5b3df5"} strokeWidth="1.3" />
-                      <path d="M2 3.5v3c0 1.1 2.24 2 5 2s5-.9 5-2v-3" stroke={isLeaf ? "#fff" : "#5b3df5"} strokeWidth="1.3" />
-                      <path d="M2 6.5v3c0 1.1 2.24 2 5 2s5-.9 5-2v-3" stroke={isLeaf ? "#fff" : "#5b3df5"} strokeWidth="1.3" />
+                      <path d="M2 3.5v3c0 1.1 2.24 2 5 2s5-.9 5-2v-3" 
+                         stroke={isLeaf ? "#fff" : "#5b3df5"} 
+                           strokeWidth="1.3" />
+                      <path d="M2 6.5v3c0 1.1 2.24 2 5 2s5-.9 5-2v-3" 
+                         stroke={isLeaf ? "#fff" : "#5b3df5"} 
+                           strokeWidth="1.3" />
                     </svg>
                   ) : isLeaf ? (
                     // leaf: tag icon
@@ -239,7 +243,9 @@ const HierarchyPanel: React.FC<{
                   ) : (
                     // mid: folder icon
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                      <path d="M1 4a1 1 0 011-1h3l1.5 1.5H12a1 1 0 011 1V11a1 1 0 01-1 1H2a1 1 0 01-1-1V4z" stroke="#5b3df5" strokeWidth="1.3" />
+                      <path d="M1 4a1 1 0 011-1h3l1.5 1.5H12a1 1 0 011 1V11a1 1 0 01-1 1H2a1 1 0 01-1-1V4z" 
+                         stroke="#5b3df5" 
+                           strokeWidth="1.3" />
                     </svg>
                   )}
                 </div>
@@ -368,7 +374,12 @@ const EventListPage = () => {
       <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20 }}>
 
         {/* ── PAGE TITLE ── */}
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+        <div style={{ 
+                     display: "flex", 
+                     alignItems: "flex-end", 
+                     justifyContent: "space-between", 
+                     flexWrap: "wrap", 
+                     gap: 12 }}>
           <div>
             <h1
               style={{
@@ -407,7 +418,13 @@ const EventListPage = () => {
                 <div style={{ fontSize: 17, fontWeight: 700, color: "#111827", lineHeight: 1.2 }}>
                   {s.value}
                 </div>
-                <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 2, textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 600 }}>
+                <div style={{ 
+                             fontSize: 10, 
+                             color: "#9ca3af", 
+                             marginTop: 2, 
+                             textTransform: "uppercase", 
+                             letterSpacing: "0.05em", 
+                             fontWeight: 600 }}>
                   {s.label}
                 </div>
               </div>
